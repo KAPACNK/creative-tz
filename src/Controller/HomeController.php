@@ -71,6 +71,37 @@ class HomeController
         return $response;
     }
 
+
+
+        /**
+     * @param ServerRequestInterface $request
+     * @param ResponseInterface      $response
+     *
+     * @return ResponseInterface
+     */
+    public function movie(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+
+        try {
+            $movieId = $_GET['id'];
+            $movie = $this->em->getRepository(Movie::class)
+            ->find($movieId);
+            if(!$movie){
+                throw new HttpBadRequestException($request, 'Not found');
+            }
+            $data = $this->twig->render('home/movie.html.twig', [
+                'movie' => $movie,
+            ]);
+
+        } catch (\Exception $e) {
+            throw new HttpBadRequestException($request, $e->getMessage(), $e);
+        }
+
+        $response->getBody()->write($data);
+
+        return $response;
+    }
+
     /**
      * @return Collection
      */
