@@ -61,6 +61,8 @@ class HomeController
         try {
             $data = $this->twig->render('home/index.html.twig', [
                 'trailers' => $this->fetchData(),
+                'controllerName' => explode('::', end(explode("\\", __METHOD__)))[0],
+                'methodName' => explode('::', end(explode("\\", __METHOD__)))[1],
             ]);
         } catch (\Exception $e) {
             throw new HttpBadRequestException($request, $e->getMessage(), $e);
@@ -91,6 +93,8 @@ class HomeController
             }
             $data = $this->twig->render('home/movie.html.twig', [
                 'movie' => $movie,
+                'controllerName' => explode('::', end(explode("\\", __METHOD__)))[0],
+                'methodName' => explode('::', end(explode("\\", __METHOD__)))[1],
             ]);
 
         } catch (\Exception $e) {
